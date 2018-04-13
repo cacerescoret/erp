@@ -1,0 +1,104 @@
+<div class="barra">
+  <span title="Proveedores" 
+        routerLink="/listado-proveedores">
+      <i class="fas fa-box"></i>
+  </span>
+  <span title="Presupuestos">
+      <i class="fas fa-dollar-sign"></i>
+  </span>
+</div>
+<div class="col-md-12 barra-breadcrumb">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/">Inicio</a>
+      </li>
+      <li class="breadcrumb-item">
+          <a routerLink="/compras">Compras</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a routerLink="/listado-proveedores">Proveedores</a>
+      </li>
+      <li class="breadcrumb-item active" 
+          aria-current="page">
+        Crear proveedor
+      </li>
+    </ol>
+  </nav>
+</div>
+<div class="col-md-12 titulo">
+  <span>Crear Proveedor</span>
+  <button class="btn btn-primary"
+          routerLink="/listado-proveedores">
+    Volver al listado
+  </button>
+</div>
+<div class="col-md-12">
+  <p class="alert alert-warning"
+     [@alerta]="estadoAlerta">{{mensaje}}</p>
+</div>
+<div class="col-md-8 offset-2">
+  <form [formGroup]="formProveedor" 
+        (ngSubmit)="crearProveedor()">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input type="text" class="form-control"
+             formControlName="nombre">
+    </div>
+    <div class="form-group">
+      <label for="cif">CIF</label>
+      <input type="text" class="form-control"
+             formControlName="cif" #cif>
+    </div>
+    <div class="form-group">
+      <label for="domicilio">Domicilio</label>
+      <input type="text" class="form-control"
+             formControlName="domicilio">
+    </div>
+    <div class="form-group">
+      <label for="cp">Código Postal</label>
+      <input type="number" class="form-control"
+             formControlName="cp">
+    </div>
+    <div class="form-group">
+      <label for="localidad">Localidad</label>
+      <input type="text" class="form-control"
+             formControlName="localidad">
+    </div>
+    <div class="form-group">
+      <label for="provincia">Provincia</label>
+      <select class="form-control"
+              formControlName="provincia">
+        <option *ngFor="let provincia of provincias"
+                [value]="provincia">
+                {{provincia}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="telefono">Teléfono</label>
+      <input type="text" class="form-control"
+             formControlName="telefono">
+    </div>
+    <div class="form-group">
+      <label for="email">Correo Electrónico</label>
+      <input type="email" class="form-control"
+             formControlName="email">
+    </div>
+    <div class="form-group">
+      <label for="contacto">Persona de Contacto</label>
+      <input type="text" class="form-control"
+             formControlName="contacto">
+    </div>
+    <button type="submit" class="btn btn-primary">
+      <span *ngIf="!enviando">Crear proveedor</span>
+      <span *ngIf="enviando">
+        <i class="fas fa-spinner fa-pulse"></i>
+      </span>
+    </button>
+    <button class="btn btn-danger" 
+            routerLink="/listado-proveedores">
+      Cancelar
+    </button>
+  </form>
+</div>

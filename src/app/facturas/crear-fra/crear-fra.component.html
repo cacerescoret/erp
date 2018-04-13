@@ -1,0 +1,177 @@
+<div class="barra">
+  <span title="Proveedores" 
+        routerLink="/listado-proveedores">
+      <i class="fas fa-box"></i>
+  </span>
+  <span title="Facturas"
+        routerLink="/listado-facturas">
+      <i class="fas fa-dollar-sign"></i>
+  </span>
+</div>
+<div class="col-md-12 barra-breadcrumb">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/">Inicio</a>
+      </li>
+      <li class="breadcrumb-item">
+          <a routerLink="/compras">Compras</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a routerLink="/listado-facturas">Facturas</a>
+      </li>
+      <li class="breadcrumb-item active" 
+          aria-current="page">
+        Crear factura
+      </li>
+    </ol>
+  </nav>
+</div>
+<div class="col-md-12 titulo">
+  <span>Crear Factura</span>
+  <button class="btn btn-primary"
+          routerLink="/listado-facturas">
+    Volver al listado
+  </button>
+</div>
+<div class="col-md-10 offset-md-1 col-12">
+  <div class="formulario">
+    <form [formGroup]="formFra" (ngSubmit)="registrarFra()">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="proveedor">Proveedor</label>
+          <span *ngIf="formFra.controls.proveedor.valid &&
+                      formFra.controls.proveedor.dirty">
+              <i class="fas fa-check-circle icono-verde"></i>
+          </span>
+          <span class="carmesi" *ngIf="formFra.controls.proveedor.invalid &&
+                        formFra.controls.proveedor.touched">
+            <i class="fas fa-times-circle"></i>
+            El campo es obligatorio
+          </span>
+          <input type="text" class="form-control"
+                formControlName="proveedor" autofocus
+                #proveedor>
+        </div>
+        <div class="col-md-6">
+          <label for="cif">CIF</label>
+          <span *ngIf="formFra.controls.cif.valid &&
+                      formFra.controls.cif.dirty && cif">
+              <i class="fas fa-check-circle icono-verde"></i>
+          </span>
+          <span class="carmesi" *ngIf="formFra.controls.cif.invalid &&
+                        formFra.controls.cif.touched &&
+                        !formFra.value.cif">
+            <i class="fas fa-times-circle"></i>
+            El campo es obligatorio
+          </span>
+          <span class="carmesi" *ngIf="formFra.controls.cif.invalid &&
+                      formFra.controls.cif.dirty &&
+                      formFra.value.cif && cif">
+            <i class="fas fa-times-circle"></i>
+            El campo debe tener 9 caracteres
+          </span>
+          <input type="text" class="form-control"
+                formControlName="cif"
+                [(ngModel)]="formFra.value.cif" maxlength="9">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+            <label for="fecha">Fecha factura</label>
+            <input type="date" class="form-control"
+                    formControlName="fecha">
+        </div>
+        <div class="col-md-8">
+            <label for="concepto">Concepto</label>
+            <input type="text" class="form-control"
+                    formControlName="concepto">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+            <label for="base">Base Imponible</label>
+            <span *ngIf="formFra.controls.base.valid &&
+                        formFra.controls.base.dirty">
+                <i class="fas fa-check-circle icono-verde"></i>
+            </span>
+            <span class="carmesi" *ngIf="formFra.controls.base.invalid &&
+                          formFra.controls.base.touched && !base">
+              <i class="fas fa-times-circle"></i>
+              El campo es obligatorio
+            </span>
+            <input type="number" class="form-control"
+                    formControlName="base">
+        </div>
+        <div class="col-md-4 radiobotones">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" 
+                      [value]=true
+                      formControlName="retencion">
+              <label class="form-check-label">
+                Con retención IRPF
+              </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio"  
+                        [value]=false
+                        formControlName="retencion">
+                <label class="form-check-label">
+                  Sin retención IRPF
+                </label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="tipo">% IVA</label>
+            <select class="form-control"
+                    formControlName="tipo"
+                    [(ngModel)]="formFra.value.tipo">
+              <option value=0>0 %</option>
+              <option value=0.04>4 %</option>
+              <option value=0.1>10 %</option>
+              <option value=0.21>21 %</option>
+            </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4" *ngIf="!retencion"></div>
+        <div class="col-md-4" *ngIf="retencion">
+          <label for="irpf">Retención IRPF</label>
+          <input type="text" class="form-control"
+                formControlName="irpf"
+                [(ngModel)]="formFra.value.irpf"
+                readonly>
+        </div>
+        <div class="col-md-4">
+          <label for="importe">Importe IVA</label>
+          <input type="text" class="form-control"
+                formControlName="importe"
+                [(ngModel)]="formFra.value.importe"
+                readonly>
+        </div>
+        <div class="col-md-4">
+            <label for="total">Total factura IVA incluido</label>
+            <input type="text" class="form-control"
+                    formControlName="total"
+                    [(ngModel)]="formFra.value.total"
+                    readonly>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+            <button type="submit" 
+                    class="btn btn-primary"
+                    [disabled]="formFra.invalid">
+                Registrar factura
+            </button>
+            <button class="btn btn-danger"
+                    routerLink="/listado-facturas">
+              Cancelar
+            </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+

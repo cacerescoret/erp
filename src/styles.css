@@ -1,0 +1,109 @@
+.barra {
+    background-color: rgb(48, 48, 48);
+    width: 80px;
+    height: calc(100vh - 56px);
+    position: fixed;
+    top: 56px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.barra span {
+    color: grey;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.barra span:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.barra span:first-child {
+    margin-top: 150px;
+}
+
+.col-md-12 {
+    width: calc(100% - 80px);
+    margin-left: 80px;
+}
+
+.menu-inicio {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+
+.box {
+    width: 300px;
+    height: 200px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin: 20px;
+}
+
+.box span { font-size: 80px;}
+
+.box p {
+    font-size: 26px;
+    color: white;
+}
+
+.rojo { background-color: #d9534f;}
+.rojo:hover { background-color: #f35a55;}
+.rojo span { color: #c44a46; }
+
+.azul { background-color: #428bca;}
+.azul:hover { background-color: #4fa6f1;}
+.azul span { color: #3979b1; }
+
+.verde { background-color: #5cb85c;}
+.verde:hover { background-color: #71e071;}
+.verde span { color: #4b994b; }
+
+.amarillo { background-color: #f0cf16;}
+.amarillo:hover { background-color: #eed12d;}
+.amarillo span { color: #d8bb14; }
+
+.titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.titulo span:first-child {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.formulario {
+    padding: 20px 20px 40px;
+}
+
+.formulario .row {
+    padding: 10px 0;
+}
+
+.radiobotones {
+    padding-top: 26px;
+}
+
+.icono-verde {
+    color: green;
+}
+
+.carmesi {
+    color: crimson;
+}
+
+.barra-breadcrumb {
+    margin-top: 80px;
+}
