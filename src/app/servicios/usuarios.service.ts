@@ -24,7 +24,8 @@ export class UsuariosService {
   }
 
   postUsuario(usuario){
-    let url = 'http://localhost:3000/usuario';
+    //Las consultas en las url se construyen con ?nombreconsulta=
+    let url = 'http://localhost:3000/usuario?token=' + this.token;
     return this.http.post(url, usuario)
                   .map((res:any)=>{
                     return res;

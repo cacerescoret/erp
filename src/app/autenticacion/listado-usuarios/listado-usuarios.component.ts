@@ -97,7 +97,9 @@ export class ListadoUsuariosComponent implements OnInit {
                           },(error:any)=>{
                             this.enviando = false;
                             this.mostrarAlerta = true;
-                            if(error.error.errores.errors.email.message){
+                            if (error.error.mensaje === 'token incorrecto'){
+                              this.mensaje = 'Sesión caducada, reinicie sesión';
+                            } else if(error.error.errores.errors.email.message){
                                 this.mensaje = error.error.errores.errors.email.message;
                             }
                             setTimeout(()=>{

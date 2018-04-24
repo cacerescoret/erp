@@ -56,11 +56,18 @@ export class ListadoProvComponent implements OnInit {
                       this.mostrarAlerta = false;
                     }, 2000);
                   }, (error:any)=>{
-                    this.mensaje = "Error de conexión";
+                    if (error.error.mensaje === 'token incorrecto'){
+                      this.mensaje = 'Sesión caducada, reinicie sesión'
+                    } else {
+                      this.mensaje = "Error de conexión";
+                    }
                     this.mostrarAlerta = true;
                     setTimeout(()=>{
                       this.mostrarAlerta = false;
                     }, 2000);
+                    setTimeout(()=>{
+                      this.mensaje = "Error de conexión";
+                    }, 3000);
                   })
   }
 }
