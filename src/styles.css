@@ -72,6 +72,10 @@
 .amarillo:hover { background-color: #eed12d;}
 .amarillo span { color: #d8bb14; }
 
+.marron { background-color: #f07f16;}
+.marron:hover { background-color: #fd8718;}
+.marron span { color: #e27815; }
+
 .titulo {
     display: flex;
     justify-content: space-between;
@@ -96,14 +100,128 @@
     padding-top: 26px;
 }
 
-.icono-verde {
+.valido {
     color: green;
 }
 
-.carmesi {
+.novalido {
     color: crimson;
 }
 
-.barra-breadcrumb {
+.barra-breadcrumb, .autenticacion {
     margin-top: 80px;
+}
+
+.autenticacion h1 {
+    font-size: 22px;
+    text-align: center;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav span {
+    font-size: 20px;
+    color: #696969;
+    margin-right: 7px; 
+}
+
+.cabecera {
+    width: 100%;
+    display: flex;
+}
+
+.cabecera .campo {
+    margin: 5px;
+    height: 40px;
+}
+
+.cabecera .campo:nth-child(1) {width: 30%;}
+.cabecera .campo:nth-child(2) {width: 30%;}
+.cabecera .campo:nth-child(3) {width: 30%;}
+.cabecera .campo:nth-child(4) {
+    width: 10%;
+    border: none;
+}
+
+.cabecera .campo p {
+    font-weight: bold;
+}
+
+.fila {
+    width: 100%;
+    display: flex;
+}
+
+.fila .campo {
+    margin: 5px;
+    height: 40px;
+    border-bottom: 1px solid lightgrey;
+}
+
+.fila .campo p {
+    padding-top: 8px;
+}
+
+.fila .campo:nth-child(1) {width: 30%;}
+.fila .campo:nth-child(2) {width: 30%;}
+.fila .campo:nth-child(3) {width: 30%;}
+.fila .campo:nth-child(4) {
+    width: 10%;
+    border: none;
+}
+
+.fila .nuevo {
+    margin: 5px;
+    height: 40px;
+    border-bottom: 1px solid lightgrey;
+}
+
+.fila .nuevo:nth-child(1) {width: 25%;}
+.fila .nuevo:nth-child(2) {width: 25%;}
+.fila .nuevo:nth-child(3) {width: 20%;}
+.fila .nuevo:nth-child(4) {width: 20%;}
+.fila .nuevo:nth-child(5) {
+    width: 10%;
+    border:none;
+}
+
+.fila input {
+    width: 100%;
+    margin: 0;
+    height: 40px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid lightgrey;
+    color: #2b5c86;
+}
+
+.fila input::-webkit-input-placeholder {
+    color: #2b5c86;
+}
+
+.fila input:focus {
+    outline: none;
+    border-bottom: 2px solid #3979b1;
+}
+
+form.fila {
+    margin-bottom: 40px;
+}
+
+.fila select {
+    height: 40px;
+    width: 100%;
+    color: #2b5c86;
+}
+
+.fila select:focus {
+    outline: none;
+}
+
+.fila.editable {
+    margin-bottom: 0;
 }

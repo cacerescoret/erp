@@ -18,16 +18,41 @@ import { FacturasService } from './servicios/facturas.service';
 import { ListadoFraComponent } from './facturas/listado-fra/listado-fra.component';
 import { CrearFraComponent } from './facturas/crear-fra/crear-fra.component';
 import { EditarFraComponent } from './facturas/editar-fra/editar-fra.component';
+import { UsuariosService } from './servicios/usuarios.service';
+import { RegistroComponent } from './autenticacion/registro/registro.component';
+import { LoginComponent } from './autenticacion/login/login.component';
+import { RutasGuard } from './rutas.guard';
+import { VentasComponent } from './ventas/ventas.component';
+import { ListadoClientesComponent } from './clientes/listado-clientes/listado-clientes.component';
+import { CrearClienteComponent } from './clientes/crear-cliente/crear-cliente.component';
+import { EditarClienteComponent } from './clientes/editar-cliente/editar-cliente.component';
+import { EditarPresupuestoComponent } from './presupuestos/editar-presupuesto/editar-presupuesto.component';
+import { CrearPresupuestoComponent } from './presupuestos/crear-presupuesto/crear-presupuesto.component';
+import { ListadoPresupuestosComponent } from './presupuestos/listado-presupuestos/listado-presupuestos.component';
+import { PresupuestosService } from './servicios/presupuestos.service';
+import { ClientesService } from './servicios/clientes.service';
+import { ListadoUsuariosComponent } from './autenticacion/listado-usuarios/listado-usuarios.component';
+
 
 const routes: Routes = [
   { path: '', component: InicioComponent },
-  { path: 'compras', component: ComprasComponent },
-  { path: 'listado-proveedores', component: ListadoProvComponent},
-  { path: 'crear-proveedor', component: CrearProvComponent },
-  { path: 'editar-proveedor/:id', component: EditarProvComponent },
-  { path: 'listado-facturas', component: ListadoFraComponent},
-  { path: 'crear-factura', component: CrearFraComponent },
-  { path: 'editar-factura/:id', component: EditarFraComponent },
+  { path: 'registro', component: RegistroComponent},
+  { path: 'inicio-sesion', component: LoginComponent},
+  { path: 'listado-usuarios', component: ListadoUsuariosComponent, canActivate: [RutasGuard] },  
+  { path: 'compras', component: ComprasComponent, canActivate: [RutasGuard] },
+  { path: 'listado-proveedores', component: ListadoProvComponent, canActivate: [RutasGuard]},
+  { path: 'crear-proveedor', component: CrearProvComponent, canActivate: [RutasGuard] },
+  { path: 'editar-proveedor/:id', component: EditarProvComponent, canActivate: [RutasGuard] },
+  { path: 'listado-facturas', component: ListadoFraComponent, canActivate: [RutasGuard]},
+  { path: 'crear-factura', component: CrearFraComponent, canActivate: [RutasGuard] },
+  { path: 'editar-factura/:id', component: EditarFraComponent, canActivate: [RutasGuard] },
+  { path: 'ventas', component: VentasComponent, canActivate: [RutasGuard] },
+  { path: 'listado-clientes', component: ListadoClientesComponent, canActivate: [RutasGuard]},
+  { path: 'crear-cliente', component: CrearClienteComponent, canActivate: [RutasGuard] },
+  { path: 'editar-cliente/:id', component: EditarClienteComponent, canActivate: [RutasGuard] },
+  { path: 'listado-presupuestos', component: ListadoPresupuestosComponent, canActivate: [RutasGuard]},
+  { path: 'crear-presupuesto', component: CrearPresupuestoComponent, canActivate: [RutasGuard] },
+  { path: 'editar-presupuesto/:id', component: EditarPresupuestoComponent, canActivate: [RutasGuard] },
   { path: '**', component: InicioComponent }
 ]
 
@@ -43,7 +68,17 @@ const routes: Routes = [
     EditarProvComponent,
     ListadoFraComponent,
     CrearFraComponent,
-    EditarFraComponent
+    EditarFraComponent,
+    RegistroComponent,
+    LoginComponent,
+    VentasComponent,
+    ListadoClientesComponent,
+    CrearClienteComponent,
+    EditarClienteComponent,
+    EditarPresupuestoComponent,
+    CrearPresupuestoComponent,
+    ListadoPresupuestosComponent,
+    ListadoUsuariosComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +87,12 @@ const routes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule
   ],
-  providers: [ProveedoresService, FacturasService],
+  providers: [ProveedoresService, 
+              FacturasService, 
+              UsuariosService,
+              RutasGuard,
+              PresupuestosService,
+              ClientesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

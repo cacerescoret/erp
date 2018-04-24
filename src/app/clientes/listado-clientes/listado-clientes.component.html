@@ -1,6 +1,6 @@
 <div class="barra">
-  <span title="Proveedores" 
-        routerLink="/listado-proveedores">
+  <span title="Clientes" 
+        routerLink="/listado-clientes">
       <i class="fas fa-box"></i>
   </span>
   <span title="Presupuestos">
@@ -14,22 +14,21 @@
         <a routerLink="/">Inicio</a>
       </li>
       <li class="breadcrumb-item">
-          <a routerLink="/compras">Compras</a>
+          <a routerLink="/ventas">Ventas</a>
       </li>
       <li class="breadcrumb-item active" 
           aria-current="page">
-        Proveedores
+        Clientes
       </li>
     </ol>
   </nav>
 </div>
 <div class="col-md-12 titulo">
-  <span>Proveedores</span>
+  <span>Clientes</span>
   <span class="alert alert-warning"
-     [@alerta]="estadoAlerta">{{mensaje}}</span>
+      [@alerta]="estadoAlerta">{{mensaje}}</span>
   <button class="btn btn-primary"
-          routerLink="/crear-proveedor"
-          *ngIf="usuariosService.getPerProveedores()">
+          routerLink="/crear-cliente">
     <i class="fas fa-plus-circle"></i>
   </button>
 </div>
@@ -41,25 +40,19 @@
       <th>Teléfono</th>
       <th></th>
     </tr>
-    <tr *ngFor="let proveedor of proveedores">
-      <td>{{proveedor.nombre}}</td>
-      <td>{{proveedor.cif}}</td>
-      <td>{{proveedor.telefono}}</td>
+    <tr *ngFor="let cliente of clientes">
+      <td>{{cliente.nombre}}</td>
+      <td>{{cliente.cif}}</td>
+      <td>{{cliente.telefono}}</td>
       <td>
         <button class="btn btn-success"
-          routerLink="/editar-proveedor/{{proveedor._id}}">
-          <span *ngIf="usuariosService.getPerProveedores()">
-              <i class="fas fa-pen-square"></i>
-          </span>
-          <span *ngIf="!usuariosService.getPerProveedores()">
-              <i class="fas fa-eye"></i>
-          </span>
+          routerLink="/editar-cliente/{{cliente._id}}">
+          <i class="fas fa-pen-square"></i>
         </button>
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-danger" 
                 data-toggle="modal" data-target="#exampleModal"
-                (click)="obtenerId(proveedor._id)"
-                *ngIf="usuariosService.getPerProveedores()">
+                (click)="obtenerId(cliente._id)">
           <i class="fas fa-trash-alt"></i>
         </button>
         <!-- Modal -->
@@ -75,12 +68,12 @@
                 </button>
               </div>
               <div class="modal-body">
-                ¿Está seguro de eliminar el proveedor?
+                ¿Está seguro de eliminar el cliente?
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
-                        (click)="borrarProveedor()">Aceptar</button>
+                        (click)="borrarCliente()">Aceptar</button>
               </div>
             </div>
           </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { ProveedoresService } from '../../servicios/proveedores.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UsuariosService } from '../../servicios/usuarios.service';
 
 @Component({
   selector: 'app-editar-prov',
@@ -24,7 +25,8 @@ export class EditarProvComponent implements OnInit {
   constructor(private pf: FormBuilder,
               private proveedoresService: ProveedoresService,
               private router: Router,
-              private route: ActivatedRoute) { 
+              private route: ActivatedRoute,
+              private usuariosService: UsuariosService) { 
                 if(!this.proveedor){
                   this.proveedor = {};
                 }

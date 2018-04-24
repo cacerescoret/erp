@@ -1,0 +1,131 @@
+<div *ngIf="usuariosService.getPerAdmin()">
+  <div class="autenticacion">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active" 
+            aria-current="page">
+          Usuarios
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div class="titulo">
+    <span>Usuarios</span>
+    <span class="alert alert-warning"
+      [@alerta]="estadoAlerta">{{mensaje}}</span>
+      <button class="btn btn-primary" 
+              *ngIf="!mostrarFormulario"
+              (click)="verFormulario()">
+        <i class="fas fa-plus-square"></i>
+      </button>
+      <button class="btn btn-danger" 
+              *ngIf="mostrarFormulario"
+              (click)="verFormulario()">
+              <i class="fas fa-ban"></i>
+      </button>
+  </div>
+  <form class="fila" [formGroup]="formUsuario" 
+        (ngSubmit)="crearUsuario()" [@formulario]="MostrarFormulario">
+    <div class="nuevo">
+      <input type="text" placeholder="Nombre" 
+            formControlName="nombre">
+    </div>
+    <div class="nuevo">
+      <input type="email" placeholder="Correo electrónico" 
+              formControlName="email">
+    </div>
+    <div class="nuevo">
+      <input type="text" placeholder="Contraseña" 
+              formControlName="password">
+    </div>
+    <div class="nuevo">
+      <select formControlName="rol">
+        <option value="Administrador">Administrador</option>
+        <option value="Director de Compras">Director de Compras</option>
+        <option value="Empleado de Compras">Empleado de Compras</option>
+        <option value="Director de Ventas">Director de Ventas</option>
+        <option value="Empleado de Ventas">Empleado de Ventas</option>
+      </select>
+    </div>
+    <div class="nuevo">
+      <button type="submit" class="btn btn-primary"
+              [disabled]="formUsuario.invalid">
+        <span *ngIf="!enviando">
+            <i class="fas fa-save"></i>
+        </span>
+        <span *ngIf="enviando">
+            <i class="fas fa-spinner fa-pulse"></i>
+        </span>
+      </button>
+    </div>
+  </form>
+  <div class="cabecera">
+    <div class="campo"><p>Nombre</p></div>
+    <div class="campo"><p>Correo Electrónico</p></div>
+    <div class="campo"><p>Rol de usuario</p></div>
+    <div class="campo"></div>
+  </div>
+  <div *ngFor="let usuario of usuarios">
+    <form [formGroup]="formEditarUsuario" class="fila editable"
+          *ngIf="filaEditada === usuario._id">
+      <div class="campo">
+        <input type="text" formControlName="nombre"
+               [(ngModel)]="usuario.nombre">
+      </div>
+      <div class="campo">
+        <input type="email" formControlName="email"
+                [(ngModel)]="usuario.email">
+      </div>
+      <div class="campo">
+        <select formControlName="rol"
+                [(ngModel)]="usuario.rol">
+          <option value="Administrador">Administrador</option>
+          <option value="Director de Compras">Director de Compras</option>
+          <option value="Empleado de Compras">Empleado de Compras</option>
+          <option value="Director de Ventas">Director de Ventas</option>
+          <option value="Empleado de Ventas">Empleado de Ventas</option>
+        </select>
+      </div>
+      <div class="campo">
+        <button class="btn btn-primary"
+                 (click)="editarUsuario(usuario._id)">
+          <span *ngIf="!enviando">
+            <i class="fas fa-save"></i>
+          </span>
+          <span *ngIf="enviando">
+            <i class="fas fa-spinner fa-pulse"></i>
+          </span>
+        </button>
+        <button class="btn btn-danger"
+                (click)="cancelarEdicion()">
+          <i class="fas fa-ban"></i>
+        </button>
+      </div>
+    </form>
+    <div class="fila" *ngIf="filaEditada !== usuario._id">
+      <div class="campo"><p>{{usuario.nombre}}</p></div>
+      <div class="campo"><p>{{usuario.email}}</p></div>
+      <div class="campo"><p>{{usuario.rol}}</p></div>
+      <div class="campo">
+        <button class="btn btn-success"
+                (click)="editarFila(usuario._id)"
+                [disabled]="filaEditada && 
+                            filaEditada !== usuario._id">
+          <i class="fas fa-pen-square"></i>
+        </button>
+        <button class="btn btn-danger"
+                (click)="eliminarUsuario(usuario._id)">
+          <span *ngIf="!enviando">
+            <i class="fas fa-trash-alt"></i>
+          </span>
+          <span *ngIf="enviando">
+            <i class="fas fa-spinner fa-pulse"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

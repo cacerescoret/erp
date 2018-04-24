@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ProveedoresService } from '../../servicios/proveedores.service';
+import { ClientesService } from '../../servicios/clientes.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { UsuariosService } from '../../servicios/usuarios.service';
 
 @Component({
-  selector: 'app-listado-prov',
-  templateUrl: './listado-prov.component.html',
-  styleUrls: ['./listado-prov.component.css'],
+  selector: 'app-listado-clientes',
+  templateUrl: './listado-clientes.component.html',
+  styleUrls: ['./listado-clientes.component.css'],
   animations: [
     trigger('alerta',[
       state('show', style({opacity: 1})),
@@ -17,28 +16,27 @@ import { UsuariosService } from '../../servicios/usuarios.service';
   ]
 })
 
-export class ListadoProvComponent implements OnInit {
+export class ListadoClientesComponent implements OnInit {
 
-  proveedores:any;
+  clientes:any;
   id:string;
   mostrarAlerta:boolean = false;
   mensaje:string;
 
-  constructor(private proveedoresService: ProveedoresService,
-              private usuariosService: UsuariosService) { }
+  constructor(private clientesService: ClientesService) { }
 
   ngOnInit() {
-    this.cargarProveedores();
+    this.cargarClientes();
   }
 
   get estadoAlerta(){
     return this.mostrarAlerta ? 'show' : 'hide';
   }
 
-  cargarProveedores(){
-    this.proveedoresService.getProveedores()
+  cargarClientes(){
+    this.clientesService.getClientes()
                   .subscribe((res:any)=>{
-                    this.proveedores = res.proveedores;
+                    this.clientes = res.clientes;
                   });
   }
 
@@ -46,11 +44,11 @@ export class ListadoProvComponent implements OnInit {
     this.id = id;
   }
 
-  borrarProveedor(){
-    this.proveedoresService.deleteProveedor(this.id)
+  borrarCliente(){
+    this.clientesService.deleteCliente(this.id)
                   .subscribe((res:any)=>{
-                    this.cargarProveedores();
-                    this.mensaje = "El proveedor fue eliminado";
+                    this.cargarClientes();
+                    this.mensaje = "El cliente fue eliminado";
                     this.mostrarAlerta = true;
                     setTimeout(()=>{
                       this.mostrarAlerta = false;
