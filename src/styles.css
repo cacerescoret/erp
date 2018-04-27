@@ -225,3 +225,38 @@ form.fila {
 .fila.editable {
     margin-bottom: 0;
 }
+
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.paginacion button {
+    margin: 5px;
+}
+
+/* All credits to Jorge */
+
+button {
+    box-shadow: 0 0 0 white !important;
+}
+
+.boto {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+}
+
+.activo {
+    background-color: white; 
+    color: #007bff;
+    border: solid 2px #007bff;
+    border-radius: 5px;
+    padding: 10px 15px; 
+}
+
+

@@ -11,8 +11,8 @@ export class ProveedoresService {
   constructor(private http: HttpClient,
               private usuariosService: UsuariosService) { }
 
-  getProveedores(){
-    let url = 'http://localhost:3000/proveedor';
+  getProveedores(tramo){
+    let url = 'http://localhost:3000/proveedor?tramo=' + tramo;
     return this.http.get(url)
                   .map((res:any)=>{
                     return res;

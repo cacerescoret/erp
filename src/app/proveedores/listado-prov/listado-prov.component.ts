@@ -23,6 +23,10 @@ export class ListadoProvComponent implements OnInit {
   id:string;
   mostrarAlerta:boolean = false;
   mensaje:string;
+  tramo:number = 0;
+  totales:number;
+  botones:any[] = [1,2,3,4,5];
+  tramoBotones:number = 0;
 
   constructor(private proveedoresService: ProveedoresService,
               private usuariosService: UsuariosService) { }
@@ -36,11 +40,70 @@ export class ListadoProvComponent implements OnInit {
   }
 
   cargarProveedores(){
-    this.proveedoresService.getProveedores()
+    this.proveedoresService.getProveedores(this.tramo)
                   .subscribe((res:any)=>{
                     this.proveedores = res.proveedores;
+                    this.totales = res.totales;
                   });
   }
+
+  avanzarTramo(valor){
+
+      this.tramo += valor;
+      if(this.tramo === (this.tramoBotones+5)*5){
+        this.tramoBotones += 5;
+        this.avanzarBotones();
+      } 
+      this.cargarProveedores();
+
+  }
+
+  retrocederTramo(valor){
+    this.tramo += valor;
+    if(this.tramo === this.tramoBotones * 5 - 5 ){
+      this.tramoBotones -= 5;
+      this.avanzarBotones();
+    }
+    this.cargarProveedores();
+  }
+
+  setPagina(valor){
+    this.tramo = valor;
+    this.cargarProveedores();
+  }
+
+  avanzarBotones(){
+    this.botones = [];
+    var numeroBotones = Math.ceil(this.totales / 5);
+    var i;
+    for(i=this.tramoBotones; i < this.tramoBotones + 5; i++){
+      this.botones.push(i+1);
+    }
+  }
+
+  avanzarTramoBotones(valor){
+    this.tramoBotones += valor;
+    this.botones = [];
+    var i;
+    for(i=this.tramoBotones; i < this.tramoBotones + 5; i++){
+      this.botones.push(i+1);
+    }
+    this.tramo = this.tramoBotones * 5;
+    this.cargarProveedores();
+  }
+
+  retrocederTramoBotones(valor){
+    this.tramoBotones += valor;
+    this.botones = [];
+    var i;
+    for(i=this.tramoBotones; i < this.tramoBotones + 5; i++){
+      this.botones.push(i+1);
+    }
+    this.tramo = this.tramoBotones * 5;
+    this.cargarProveedores();
+  }
+
+
 
   obtenerId(id){
     this.id = id;
