@@ -9,6 +9,7 @@ export class UsuariosService {
   token:string;
   nombre:string;
   rol:string;
+  ultimoLogin:any;
 
   constructor(private http: HttpClient,
               private router: Router) { 
@@ -64,6 +65,8 @@ export class UsuariosService {
     this.token = token;
     this.nombre = nombre;
     this.rol = rol;
+    this.ultimoLogin = new Date().valueOf();
+    localStorage.setItem('ultimoLogin', this.ultimoLogin);
   }
 
   cargarCredenciales(){
@@ -71,10 +74,12 @@ export class UsuariosService {
       this.token = localStorage.getItem('token');
       this.nombre = localStorage.getItem('nombre');
       this.rol = localStorage.getItem('rol');
+      this.ultimoLogin = localStorage.getItem('ultimoLogin');
     }else{
       this.token = '';
       this.nombre = '';
       this.rol = '';
+      this.ultimoLogin = '';
     }
   }
 
@@ -86,9 +91,11 @@ export class UsuariosService {
     this.token = '';
     this.nombre = '';
     this.rol = '';
+    this.ultimoLogin = '';
     localStorage.removeItem('token');
     localStorage.removeItem('nombre');
     localStorage.removeItem('rol');
+    localStorage.removeItem('ultimoLogin');
     this.router.navigate(['/']);
   }
 
@@ -117,6 +124,22 @@ export class UsuariosService {
       } else {
         return false;
       }
+  }
+
+  postSesion(sesion){
+    let url = 'http://localhost:3000/sesion';
+    return this.http.post(url, sesion)
+                  .map((res:any)=>{
+                    return res;
+                  });
+  }
+
+  getSesiones(nombre){
+    let url = 'http://localhost:3000/sesion?nombre=' + nombre;
+    return this.http.get(url)
+                  .map((res:any)=>{
+                    return res;
+                  })
   }
 
 }

@@ -19,7 +19,7 @@
       </button>
       <button *ngIf="getLogueado()"
               class="btn btn-primary"
-              (click)="usuariosService.logout()">
+              (click)="crearSesion();usuariosService.logout()">
         Cerrar sesión
       </button>
     </ul>

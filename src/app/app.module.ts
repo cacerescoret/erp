@@ -32,6 +32,7 @@ import { ListadoPresupuestosComponent } from './presupuestos/listado-presupuesto
 import { PresupuestosService } from './servicios/presupuestos.service';
 import { ClientesService } from './servicios/clientes.service';
 import { ListadoUsuariosComponent } from './autenticacion/listado-usuarios/listado-usuarios.component';
+import { ListadoSesionesComponent } from './autenticacion/listado-sesiones/listado-sesiones.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'registro', component: RegistroComponent},
   { path: 'inicio-sesion', component: LoginComponent},
   { path: 'listado-usuarios', component: ListadoUsuariosComponent, canActivate: [RutasGuard] },  
+  { path: 'listado-sesiones/:nombre', component: ListadoSesionesComponent, canActivate: [RutasGuard] },  
   { path: 'compras', component: ComprasComponent, canActivate: [RutasGuard] },
   { path: 'listado-proveedores', component: ListadoProvComponent, canActivate: [RutasGuard]},
   { path: 'crear-proveedor', component: CrearProvComponent, canActivate: [RutasGuard] },
@@ -78,7 +80,8 @@ const routes: Routes = [
     EditarPresupuestoComponent,
     CrearPresupuestoComponent,
     ListadoPresupuestosComponent,
-    ListadoUsuariosComponent
+    ListadoUsuariosComponent,
+    ListadoSesionesComponent
   ],
   imports: [
     BrowserModule,

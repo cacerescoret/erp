@@ -63,14 +63,16 @@
     </div>
   </form>
   <div class="cabecera">
+    <div class="campo"><p>Online</p></div>
     <div class="campo"><p>Nombre</p></div>
     <div class="campo"><p>Correo Electrónico</p></div>
     <div class="campo"><p>Rol de usuario</p></div>
     <div class="campo"></div>
   </div>
-  <div *ngFor="let usuario of usuarios">
+  <div *ngFor="let usuario of usuarios; let i=index">
     <form [formGroup]="formEditarUsuario" class="fila editable"
           *ngIf="filaEditada === usuario._id">
+      <div class="campo"></div>
       <div class="campo">
         <input type="text" formControlName="nombre"
                [(ngModel)]="usuario.nombre">
@@ -106,6 +108,14 @@
       </div>
     </form>
     <div class="fila" *ngIf="filaEditada !== usuario._id">
+      <div class="campo">
+        <p *ngIf="conectado[i]">
+            <i class="fas fa-toggle-on valido"></i>
+        </p>
+        <p *ngIf="!conectado[i]">
+            <i class="fas fa-toggle-off novalido"></i>
+        </p>
+      </div>
       <div class="campo"><p>{{usuario.nombre}}</p></div>
       <div class="campo"><p>{{usuario.email}}</p></div>
       <div class="campo"><p>{{usuario.rol}}</p></div>
@@ -124,6 +134,10 @@
           <span *ngIf="enviando">
             <i class="fas fa-spinner fa-pulse"></i>
           </span>
+        </button>
+        <button class="btn btn-warning"
+                routerLink="/listado-sesiones/{{usuario.nombre}}">
+          <i class="fas fa-clock"></i>
         </button>
       </div>
     </div>

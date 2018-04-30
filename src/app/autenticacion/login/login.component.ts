@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
     this.usuariosService.login(this.usuario)
                           .subscribe((res:any)=>{
                             this.enviando = false;
+                            this.crearSesion();
                             this.router.navigate(['/']);
                           },(error:any)=>{
                             this.enviando = false;
@@ -67,6 +68,19 @@ export class LoginComponent implements OnInit {
     }
 
     return guardarUsuario;
+  }
+
+  crearSesion(){
+    var sesion = {
+      nombre: this.usuariosService.nombre,
+      login: new Date()
+    }
+    this.usuariosService.postSesion(sesion)
+                   .subscribe((resp:any)=>{
+                      
+                   }, (error)=>{
+                      console.log(error);
+                   })
   }
 
 }
