@@ -69,7 +69,7 @@
     <div class="campo"><p>Rol de usuario</p></div>
     <div class="campo"></div>
   </div>
-  <div *ngFor="let usuario of usuarios; let i=index">
+  <div *ngFor="let usuario of usuarios">
     <form [formGroup]="formEditarUsuario" class="fila editable"
           *ngIf="filaEditada === usuario._id">
       <div class="campo"></div>
@@ -109,10 +109,10 @@
     </form>
     <div class="fila" *ngIf="filaEditada !== usuario._id">
       <div class="campo">
-        <p *ngIf="conectado[i]">
+        <p *ngIf="usuario.sesiones.length % 2 !== 0">
             <i class="fas fa-toggle-on valido"></i>
         </p>
-        <p *ngIf="!conectado[i]">
+        <p *ngIf="usuario.sesiones.length % 2 === 0">
             <i class="fas fa-toggle-off novalido"></i>
         </p>
       </div>

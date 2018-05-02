@@ -30,7 +30,6 @@ export class CabeceraComponent implements OnInit {
     var ss = ("0" + s).slice(-2);
 
     var sesion = {
-      nombre: this.usuariosService.nombre,
       logout: new Date(),
       duracion: hh + " h " + mm + " min " + ss + " seg"
     }

@@ -15,7 +15,7 @@
   </nav>
 </div>
 <div class="titulo">
-  <span>Log de sesiones</span>
+  <span>Log de sesiones de {{nombre}}</span>
   <button class="btn btn-primary"
           routerLink="/listado-usuarios">
     Volver atrás
@@ -23,12 +23,10 @@
 </div>
 <table class="table table-bordered table-striped">
   <tr>
-    <th>Nombre</th>
     <th>Login/Logout</th>
     <th>Duración</th>
   </tr>
   <tr *ngFor="let sesion of sesiones">
-    <td>{{sesion.nombre}}</td>
     <td>
       <span *ngIf="sesion.login" style="color: green">
           <i class="fas fa-sign-in-alt"></i>

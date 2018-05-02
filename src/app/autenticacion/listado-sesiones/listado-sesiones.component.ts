@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ListadoSesionesComponent implements OnInit {
 
-  sesiones:any;
+  sesiones:any[] = [];
   nombre:string;
 
   constructor(private usuariosService: UsuariosService,

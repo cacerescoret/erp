@@ -72,7 +72,6 @@ export class LoginComponent implements OnInit {
 
   crearSesion(){
     var sesion = {
-      nombre: this.usuariosService.nombre,
       login: new Date()
     }
     this.usuariosService.postSesion(sesion)

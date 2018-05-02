@@ -40,7 +40,6 @@ export class ListadoUsuariosComponent implements OnInit {
   mensaje:string = 'Error de conexión con la base de datos';
   enviando:boolean = false;
   filaEditada:string;
-  conectado:any = [];
 
   constructor(private usuariosService: UsuariosService,
               private fu: FormBuilder,
@@ -77,19 +76,6 @@ export class ListadoUsuariosComponent implements OnInit {
     this.usuariosService.getUsuarios()
             .subscribe((res:any)=>{
               this.usuarios = res.usuarios;
-              this.usuarios.forEach(usuario=>{
-                this.usuariosService.getSesiones(usuario.nombre)
-                          .subscribe((res:any)=>{
-                            if(res.sesiones.length % 2 === 0 ){
-                              this.conectado.push(false);
-                            } else {
-                              this.conectado.push(true);
-                            }
-                          },(error)=>{
-                            console.log(error)
-                          })
-              })
-
             }, (error)=>{
               console.log(error);
             })
