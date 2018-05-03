@@ -22,7 +22,7 @@
 }
 
 .barra span:first-child {
-    margin-top: 150px;
+    margin-top: 80px;
 }
 
 .col-md-12 {
@@ -267,4 +267,42 @@ button {
     padding: 10px 15px; 
 }
 
+.resultados {
+    margin-top: 20px;
+}
+
+.resultados p:hover {
+    color: crimson;
+    cursor: pointer;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    margin: 40px auto;
+    background-color: crimson;
+  
+    border-radius: 100%;  
+    -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+    animation: sk-scaleout 1.0s infinite ease-in-out;
+  }
+  
+  @-webkit-keyframes sk-scaleout {
+    0% { -webkit-transform: scale(0) }
+    100% {
+      -webkit-transform: scale(1.0);
+      opacity: 0;
+    }
+  }
+  
+  @keyframes sk-scaleout {
+    0% { 
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    } 100% {
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+      opacity: 0;
+    }
+  }
 
