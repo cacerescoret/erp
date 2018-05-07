@@ -7,6 +7,10 @@
         routerLink="/listado-presupuestos">
       <i class="fas fa-dollar-sign"></i>
   </span>
+  <span title="Articulos"
+    routerLink="/listado-articulos">
+    <i class="fas fa-clipboard-list"></i>
+  </span>
 </div>
 <div class="col-md-12 barra-breadcrumb">
   <nav aria-label="breadcrumb">
@@ -34,19 +38,134 @@
     Volver al listado
   </button>
 </div>
-<div class="col-md-8 offset-md-2 col-12">
+<div class="col-md-10 offset-md-1 col-12">
   <div class="formulario">
     <form [formGroup]="formPre" (ngSubmit)="registrarPre()">
-      <div class="form-group">
-        <label for="cliente">Cliente</label>
-        <input type="text" class="form-control" autofocus
-               formControlName="cliente" list="clientes">
-        <datalist id="clientes">
-          <option *ngFor="let cliente of clientes"
-                   [value]="cliente.nombre">
-            {{cliente.nombre}}
-          </option>
-        </datalist>
+      <div class="form-row">
+        <div class="col-md-6">
+          <label for="cliente">Cliente</label>
+          <input type="text" class="form-control" autofocus
+                  formControlName="cliente" list="clientes">
+          <datalist id="clientes">
+            <option *ngFor="let cliente of clientes"
+                      [value]="cliente.nombre">
+              {{cliente.nombre}}
+            </option>
+          </datalist>
+        </div>
+        <div class="col-md-6">
+          <label for="fecha">Fecha</label>
+          <input type="date" class="form-control"
+                  formControlName="fecha">
+        </div>
+      </div>
+      <hr>
+      <h5>Artículos</h5>
+      <div formArrayName="items">
+        <div *ngFor="let item of formPre.controls.items.controls; let i = index">
+          <div [formGroupName]="i" class="form-row">
+            <div class="form-group col-md-1">
+              <label>Nº</label>
+              <input type="text" class="form-control"
+                     value="{{i+1}}" readonly>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="articulo">Artículo</label>
+              <input type="text" class="form-control"
+                     formControlName="articulo">
+            </div>
+            <div class="form-group col-md-2">
+              <label for="cantidad">Cantidad</label>
+              <input type="number" class="form-control"
+                      formControlName="cantidad">
+            </div>
+            <div class="form-group col-md-2">
+              <label for="precio">Precio</label>
+              <input type="number" class="form-control"
+                      formControlName="precio">
+            </div>
+            <div class="form-group col-md-2">
+              <label for="importe">Importe</label>
+              <input type="number" class="form-control"
+                      formControlName="importe"
+                      [(ngModel)]="formPre.value.items[i].importe"
+                      readonly>
+            </div>
+            <div class="form-group col-md-1">
+              <button class="btn btn-danger" style="margin-top: 32px;"
+                      (click)="removeItem(i)">
+                <i class="fas fa-minus-circle"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-1">
+            <button class="btn btn-primary"
+                    (click)="addItem()">
+              <i class="fas fa-plus-circle"></i>
+            </button>
+        </div>
+        <div class="col-md-8" style="text-align:right">
+            <label for="suma" style="margin-top: 6px">
+              Suma sin IVA
+            </label>
+        </div>
+        <div class="col-md-2">
+          <input type="number" class="form-control"
+                 formControlName="suma"
+                 [(ngModel)]="formPre.value.suma"
+                 readonly>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top: 10px;">
+          <div class="col-md-7" style="text-align:right">
+              <label for="tipo" style="margin-top: 8px">
+                % IVA
+              </label>
+          </div>
+          <div class="col-md-2">
+              <select class="form-control"
+                      formControlName="tipo">
+                <option value=0>0 %</option>
+                <option value=0.04>4 %</option>
+                <option value=0.1>10 %</option>
+                <option value=0.21>21 %</option>
+              </select>
+          </div>
+          <div class="col-md-2">
+              <input type="number" class="form-control"
+                     formControlName="importeIVA"
+                     [(ngModel)]="formPre.value.importeIVA"
+                     readonly>
+          </div>
+      </div>
+      <div class="form-row" style="margin-top: 10px;">
+          <div class="col-md-9" style="text-align:right">
+              <label for="suma" style="margin-top: 6px">
+                Total presupuesto IVA incluido
+              </label>
+          </div>
+          <div class="col-md-2">
+              <input type="number" class="form-control"
+                     formControlName="total"
+                    [(ngModel)]="formPre.value.total"
+                    readonly>
+          </div>
+      </div>
+      <div class="form-row" style="margin-top: 40px;">
+          <div class="col-md-11" style="text-align:right">
+            <hr>
+            <button class="btn btn-danger"
+                    routerLink="/listado-presupuestos">
+              Cancelar
+            </button>
+            <button class="btn btn-primary"
+                    type="submit">
+              Crear presupuesto
+            </button>
+          </div>
       </div>
     </form>
   </div>

@@ -33,6 +33,10 @@ import { PresupuestosService } from './servicios/presupuestos.service';
 import { ClientesService } from './servicios/clientes.service';
 import { ListadoUsuariosComponent } from './autenticacion/listado-usuarios/listado-usuarios.component';
 import { ListadoSesionesComponent } from './autenticacion/listado-sesiones/listado-sesiones.component';
+import { CrearArticuloComponent } from './articulos/crear-articulo/crear-articulo.component';
+import { EditarArticuloComponent } from './articulos/editar-articulo/editar-articulo.component';
+import { ListadoArticulosComponent } from './articulos/listado-articulos/listado-articulos.component';
+import { ArticulosService } from './servicios/articulos.service';
 
 
 const routes: Routes = [
@@ -55,6 +59,9 @@ const routes: Routes = [
   { path: 'listado-presupuestos', component: ListadoPresupuestosComponent, canActivate: [RutasGuard]},
   { path: 'crear-presupuesto', component: CrearPresupuestoComponent, canActivate: [RutasGuard] },
   { path: 'editar-presupuesto/:id', component: EditarPresupuestoComponent, canActivate: [RutasGuard] },
+  { path: 'listado-articulos', component: ListadoArticulosComponent, canActivate: [RutasGuard]},
+  { path: 'crear-articulo', component: CrearArticuloComponent, canActivate: [RutasGuard] },
+  { path: 'editar-articulo/:id', component: EditarArticuloComponent, canActivate: [RutasGuard] },
   { path: '**', component: InicioComponent }
 ]
 
@@ -81,7 +88,10 @@ const routes: Routes = [
     CrearPresupuestoComponent,
     ListadoPresupuestosComponent,
     ListadoUsuariosComponent,
-    ListadoSesionesComponent
+    ListadoSesionesComponent,
+    CrearArticuloComponent,
+    EditarArticuloComponent,
+    ListadoArticulosComponent
   ],
   imports: [
     BrowserModule,
@@ -95,7 +105,8 @@ const routes: Routes = [
               UsuariosService,
               RutasGuard,
               PresupuestosService,
-              ClientesService],
+              ClientesService,
+              ArticulosService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
