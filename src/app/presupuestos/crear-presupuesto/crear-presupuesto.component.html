@@ -40,7 +40,7 @@
 </div>
 <div class="col-md-10 offset-md-1 col-12">
   <div class="formulario">
-    <form [formGroup]="formPre" (ngSubmit)="registrarPre()">
+    <form [formGroup]="formPre">
       <div class="form-row">
         <div class="col-md-6">
           <label for="cliente">Cliente</label>
@@ -61,38 +61,58 @@
       </div>
       <hr>
       <h5>Artículos</h5>
+      <div class="form-row">
+        <div class="form-group col-md-1">
+          <label>Nº</label>
+        </div>
+        <div class="form-group col-md-4">
+          <label>Artículo</label>
+        </div>
+        <div class="form-group col-md-2">
+          <label>Cantidad</label>
+        </div>
+        <div class="form-group col-md-2">
+          <label>Precio</label>
+        </div>
+        <div class="form-group col-md-2">
+          <label>Importe</label>
+        </div>
+      </div>
       <div formArrayName="items">
         <div *ngFor="let item of formPre.controls.items.controls; let i = index">
           <div [formGroupName]="i" class="form-row">
             <div class="form-group col-md-1">
-              <label>Nº</label>
               <input type="text" class="form-control"
                      value="{{i+1}}" readonly>
             </div>
             <div class="form-group col-md-4">
-              <label for="articulo">Artículo</label>
               <input type="text" class="form-control"
-                     formControlName="articulo">
+                     formControlName="articulo" list="articulos">
+              <datalist id="articulos">
+                <option *ngFor="let articulo of articulos"
+                          [value]="articulo.referencia">
+                  {{articulo.referencia}}
+                </option>
+              </datalist>
             </div>
             <div class="form-group col-md-2">
-              <label for="cantidad">Cantidad</label>
               <input type="number" class="form-control"
                       formControlName="cantidad">
             </div>
             <div class="form-group col-md-2">
-              <label for="precio">Precio</label>
               <input type="number" class="form-control"
-                      formControlName="precio">
+                      formControlName="precio"
+                      [(ngModel)]="formPre.value.items[i].precio"
+                      readonly>
             </div>
             <div class="form-group col-md-2">
-              <label for="importe">Importe</label>
               <input type="number" class="form-control"
                       formControlName="importe"
                       [(ngModel)]="formPre.value.items[i].importe"
                       readonly>
             </div>
             <div class="form-group col-md-1">
-              <button class="btn btn-danger" style="margin-top: 32px;"
+              <button class="btn btn-danger"
                       (click)="removeItem(i)">
                 <i class="fas fa-minus-circle"></i>
               </button>

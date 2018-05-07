@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { PresupuestosService } from '../../servicios/presupuestos.service';
 import { ClientesService } from '../../servicios/clientes.service';
+import { ArticulosService } from '../../servicios/articulos.service';
 
 @Component({
   selector: 'app-crear-presupuesto',
@@ -13,13 +14,15 @@ export class CrearPresupuestoComponent implements OnInit {
   formPre: FormGroup;
   presupuesto:any;
   clientes:any;
+  articulos:any;
 
   constructor(private presupuestosService: PresupuestosService,
               private clientesService: ClientesService,
+              private articulosService: ArticulosService,
               private fp: FormBuilder) { }
 
   ngOnInit() {
-    this.cargarClientes();
+    this.cargarDatos();
     this.formPre = this.fp.group({
       cliente: null,
       fecha: null,
@@ -31,13 +34,23 @@ export class CrearPresupuestoComponent implements OnInit {
       importeIVA: 0,
       total: 0
     })
+    
+  }
+
+  ngAfterViewChecked(){
     this.cambios();
   }
 
-  cargarClientes(){
+  cargarDatos(){
     this.clientesService.getTodosClientes()
                       .subscribe((res:any)=>{
                         this.clientes = res.clientes;
+                      },(error)=>{
+                        console.log(error)
+                      })
+    this.articulosService.getArticulos()
+                      .subscribe((resp:any)=>{
+                        this.articulos = resp.articulos;
                       },(error)=>{
                         console.log(error)
                       })
@@ -79,9 +92,14 @@ export class CrearPresupuestoComponent implements OnInit {
             var importe = 0;
             var i;
             for(i=0;i<valor.items.length;i++){
-              var cantidad = valor.items[i].cantidad;
-              var precio = valor.items[i].precio;
-              this.formPre.value.items[i].importe = this.redondear(precio * cantidad);
+              var referencia = valor.items[i].articulo;
+              var articuloSel = this.articulos.find(function(articulo){
+                return articulo.referencia === referencia;
+              });
+              if(articuloSel){
+                this.formPre.value.items[i].precio = articuloSel.precio;
+                this.formPre.value.items[i].importe = valor.items[i].cantidad * this.formPre.value.items[i].precio;
+              }
               suma = suma + valor.items[i].importe;
             }
             this.formPre.value.suma = this.redondear(suma);
