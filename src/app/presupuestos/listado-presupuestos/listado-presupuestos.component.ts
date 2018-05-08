@@ -8,7 +8,7 @@ import { PresupuestosService } from '../../servicios/presupuestos.service';
 })
 export class ListadoPresupuestosComponent implements OnInit {
 
-  presupuestos:any;
+  presupuestos:any = [];
   id:string;
 
   constructor(private presupuestosService: PresupuestosService) { }
@@ -20,7 +20,12 @@ export class ListadoPresupuestosComponent implements OnInit {
   cargarPresupuestos(){
     this.presupuestosService.getPresupuestos()
                .subscribe((resp:any)=>{
-                  this.presupuestos = resp.presupuestos;
+                  var presupuestos = resp.presupuestos;
+                  presupuestos.forEach(presupuesto=>{
+                    var num = '000' + presupuesto.numero + '/18';
+                    presupuesto.nro = num.slice(-6);
+                    this.presupuestos.push(presupuesto);
+                  })
                }, error => {
                  console.log(error);
                })

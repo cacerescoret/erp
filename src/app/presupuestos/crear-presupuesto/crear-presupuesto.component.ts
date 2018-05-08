@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@ang
 import { PresupuestosService } from '../../servicios/presupuestos.service';
 import { ClientesService } from '../../servicios/clientes.service';
 import { ArticulosService } from '../../servicios/articulos.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear-presupuesto',
@@ -19,7 +20,8 @@ export class CrearPresupuestoComponent implements OnInit {
   constructor(private presupuestosService: PresupuestosService,
               private clientesService: ClientesService,
               private articulosService: ArticulosService,
-              private fp: FormBuilder) { }
+              private fp: FormBuilder,
+              private router: Router) { }
 
   ngOnInit() {
     this.cargarDatos();
@@ -107,6 +109,29 @@ export class CrearPresupuestoComponent implements OnInit {
             this.formPre.value.importeIVA = this.redondear( this.formPre.value.suma * tipo );
             this.formPre.value.total = this.redondear(this.formPre.value.importeIVA + this.formPre.value.suma);
           })
+  }
+
+  crearPresupuesto(){
+    this.presupuesto = this.guardarPresupuesto();
+    this.presupuestosService.postPresupuesto(this.presupuesto)
+                          .subscribe((resp:any)=>{
+                            this.router.navigate(['/listado-presupuestos']); 
+                          },(error)=>{
+                            console.log(error);
+                          })
+  }
+
+  guardarPresupuesto(){
+    const guardarPresupuesto = {
+      cliente: this.formPre.get('cliente').value,
+      fecha: this.formPre.get('fecha').value,
+      items: this.formPre.get('items').value,
+      suma: this.formPre.get('suma').value,
+      tipo: this.formPre.get('tipo').value,
+      importeIVA: this.formPre.get('importeIVA').value,
+      total: this.formPre.get('total').value
+    }
+    return guardarPresupuesto;
   }
 
 }
