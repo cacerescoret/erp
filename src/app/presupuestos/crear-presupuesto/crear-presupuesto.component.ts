@@ -27,6 +27,7 @@ export class CrearPresupuestoComponent implements OnInit {
     this.cargarDatos();
     this.formPre = this.fp.group({
       cliente: null,
+      cif: null,
       fecha: null,
       items: this.fp.array([
         this.initItem()
@@ -90,6 +91,15 @@ export class CrearPresupuestoComponent implements OnInit {
   cambios(){
     this.formPre.valueChanges
           .subscribe(valor=>{
+            var nombreCliente = valor.cliente;
+            var clienteSel = this.clientes.find(cliente=>{
+              return cliente.nombre === nombreCliente;
+            })
+            if(clienteSel){
+              this.formPre.value.cif = clienteSel.cif;
+            } else {
+              this.formPre.value.cif = "";
+            }
             var suma = 0;
             var importe = 0;
             var i;
@@ -98,8 +108,16 @@ export class CrearPresupuestoComponent implements OnInit {
               var articuloSel = this.articulos.find(function(articulo){
                 return articulo.referencia === referencia;
               });
-              if(articuloSel){
+              if(articuloSel && this.formPre.value.items[i].importe){
+                this.formPre.value.items[i].cantidad = valor.items[i].cantidad;
                 this.formPre.value.items[i].precio = articuloSel.precio;
+                this.formPre.value.items[i].importe = valor.items[i].cantidad * this.formPre.value.items[i].precio;
+              } else if(articuloSel){
+                this.formPre.value.items[i].cantidad = 1
+                this.formPre.value.items[i].precio = articuloSel.precio;
+                this.formPre.value.items[i].importe = valor.items[i].cantidad * this.formPre.value.items[i].precio;
+              } else {
+                this.formPre.value.items[i].precio = 0;
                 this.formPre.value.items[i].importe = valor.items[i].cantidad * this.formPre.value.items[i].precio;
               }
               suma = suma + valor.items[i].importe;
@@ -124,6 +142,7 @@ export class CrearPresupuestoComponent implements OnInit {
   guardarPresupuesto(){
     const guardarPresupuesto = {
       cliente: this.formPre.get('cliente').value,
+      cif: this.formPre.get('cif').value,
       fecha: this.formPre.get('fecha').value,
       items: this.formPre.get('items').value,
       suma: this.formPre.get('suma').value,

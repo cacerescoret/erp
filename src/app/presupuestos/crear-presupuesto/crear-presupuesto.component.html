@@ -42,7 +42,7 @@
   <div class="formulario">
     <form [formGroup]="formPre">
       <div class="form-row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="cliente">Cliente</label>
           <input type="text" class="form-control" autofocus
                   formControlName="cliente" list="clientes">
@@ -53,7 +53,14 @@
             </option>
           </datalist>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <label for="cif">CIF</label>
+            <input type="text" class="form-control"
+                    formControlName="cif"
+                    [(ngModel)]="formPre.value.cif"
+                    readonly>
+          </div>
+        <div class="col-md-4">
           <label for="fecha">Fecha</label>
           <input type="date" class="form-control"
                   formControlName="fecha">
@@ -97,7 +104,8 @@
             </div>
             <div class="form-group col-md-2">
               <input type="number" class="form-control"
-                      formControlName="cantidad">
+                      formControlName="cantidad"
+                      [(ngModel)]="formPre.value.items[i].cantidad">
             </div>
             <div class="form-group col-md-2">
               <input type="number" class="form-control"
