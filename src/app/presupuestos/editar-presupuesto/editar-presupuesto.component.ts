@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { PresupuestosService } from '../../servicios/presupuestos.service';
+import { ArticulosService } from '../../servicios/articulos.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -12,51 +13,102 @@ export class EditarPresupuestoComponent implements OnInit {
 
   formPre: FormGroup;
   presupuesto:any;
-  base:number;
-  tipo:number;
-  importe:number;
-  total:number;
-  irpf:number;
-  retencion:boolean = false;
+  articulos:any;
   id:string;
 
-  constructor(private fp: FormBuilder,
-              private presupuestosService: PresupuestosService,
+  constructor(private presupuestosService: PresupuestosService,
+              private articulosService: ArticulosService,
+              private fp: FormBuilder,
               private router: Router,
-              private route: ActivatedRoute) { 
-                if(!this.presupuesto){
-                  this.presupuesto = {};
-                }
+              private route: ActivatedRoute){
+                setTimeout(()=>{
+                  this.cambios();
+                },1000)
               }
+              
 
   ngOnInit() {
-    this.id = this.route.snapshot.params['id'];
-    this.cargarPresupuesto(this.id);
-    this.iniciarFormulario();
-  }
-
-  cargarPresupuesto(id){
-    this.presupuestosService.getPresupuestoId(id)
-                        .subscribe((res:any)=>{
-                          this.presupuesto = res.presupuesto;
-                          console.log(this.presupuesto);
-                        })
-  }
-
-  iniciarFormulario(){
+    this.getId(this.route.snapshot.params['id']);
+    this.cargarDatos();
     this.formPre = this.fp.group({
-      cliente: [ null , Validators.required ],
-      cif: ['' , [Validators.required, Validators.minLength(9)]],
+      cliente: null,
+      cif: null,
       fecha: null,
-      concepto: null,
-      base: [null, Validators.required],
-      retencion: false,
+      items: this.fp.array([
+        this.initItem()
+      ]),
+      suma: 0,
       tipo: 0.21,
-      irpf: null,
-      importe: null,
-      total: null,
-    });
-    this.detectarCambios();
+      importeIVA: 0,
+      total: 0,
+      num: null
+    })
+  }
+
+  cargarDatos(){
+    this.articulosService.getArticulos()
+                      .subscribe((resp:any)=>{
+                        this.articulos = resp.articulos;
+                      },(error)=>{
+                        console.log(error)
+                      })
+  }
+
+  getId(id){
+    this.presupuestosService.getPresupuestoId(id)
+              .subscribe((resp:any)=>{
+                this.presupuesto = resp.presupuesto;
+                this.patchForm();
+              },(error)=>{
+                console.log(error);
+              })
+    this.id = id;
+  }
+
+  patchForm(){
+    var nro = '000' + this.presupuesto.numero + '/18';
+    this.formPre.patchValue({
+      cliente: this.presupuesto.cliente,
+      cif: this.presupuesto.cif,
+      fecha: this.presupuesto.fecha,
+      suma: this.presupuesto.suma,
+      tipo: this.presupuesto.tipo,
+      importeIVA: this.presupuesto.importeIVA,
+      total: this.presupuesto.total,
+      num: nro.slice(-6)
+    })
+    this.setFormPreItems();
+  }
+
+  setFormPreItems(){
+    const control = <FormArray>this.formPre.controls.items;
+    this.presupuesto.items.forEach(element=>{
+      control.push(this.fp.group({
+        articulo: element.articulo,
+        cantidad: element.cantidad,
+        precio: element.precio,
+        importe: element.importe
+      }))
+    })
+    this.removeItem(0);
+  }
+
+  initItem(){
+    return this.fp.group({
+      articulo: null,
+      cantidad: null,
+      precio: null,
+      importe: null
+    })
+  }
+  addItem(){
+    const control = <FormArray>this.formPre.controls['items'];
+    control.push(this.initItem());
+  }
+
+  removeItem(i){
+    const control = <FormArray>this.formPre.controls['items'];
+    control.removeAt(i)
   }
 
   redondear(valor){
@@ -69,55 +121,61 @@ export class EditarPresupuestoComponent implements OnInit {
     return resultado;
   }
 
-  formatearMoneda(valor){
-    var resultado = new Intl.NumberFormat("es-ES",{style: "currency", currency: "EUR"})
-                      .format(valor);
-    return resultado;
+  cambios(){
+    this.formPre.valueChanges
+          .subscribe(valor=>{
+            var suma = 0;
+            var importe = 0;
+            var i;
+            for(i=0;i<valor.items.length;i++){
+              var referencia = valor.items[i].articulo;
+              var articuloSel = this.articulos.find(function(articulo){
+                return articulo.referencia === referencia;
+              });
+              if(articuloSel && this.formPre.value.items[i].importe){
+                this.formPre.value.items[i].cantidad = valor.items[i].cantidad;
+                this.formPre.value.items[i].precio = articuloSel.precio;
+                this.formPre.value.items[i].importe = valor.items[i].cantidad * this.formPre.value.items[i].precio;
+              } else if(articuloSel){
+                this.formPre.value.items[i].cantidad = 1
+                this.formPre.value.items[i].precio = articuloSel.precio;
+                this.formPre.value.items[i].importe = valor.items[i].cantidad * this.formPre.value.items[i].precio;
+              } else {
+                this.formPre.value.items[i].precio = 0;
+                this.formPre.value.items[i].importe = valor.items[i].cantidad * this.formPre.value.items[i].precio;
+              }
+              suma = suma + valor.items[i].importe;
+            }
+            this.formPre.value.suma = this.redondear(suma);
+            var tipo = valor.tipo;
+            this.formPre.value.importeIVA = this.redondear( this.formPre.value.suma * tipo );
+            this.formPre.value.total = this.redondear(this.formPre.value.importeIVA + this.formPre.value.suma);
+          })
   }
 
-  detectarCambios(){
-    this.formPre.valueChanges.subscribe(valorForm =>{
-      this.base = this.redondear(valorForm.base);
-      this.retencion = valorForm.retencion;
-      this.tipo = valorForm.tipo;
-      if(this.retencion){
-        this.irpf = this.redondear(this.base * -0.15);
-      } else {
-        this.irpf = 0;
-      }
-      this.importe = this.redondear(this.base * this.tipo);
-      this.total = this.redondear(this.base + this.irpf + this.importe);
-      this.formPre.value.irpf = this.formatearMoneda(this.irpf);
-      this.formPre.value.importe = this.formatearMoneda(this.importe);
-      this.formPre.value.total = this.formatearMoneda(this.total);
-    })
- 
-  }
-
-  
-  editarPre(){
-    this.presupuesto = this.guardarPre();
+  editarPresupuesto(){
+    this.presupuesto = this.guardarPresupuesto();
     this.presupuestosService.putPresupuesto(this.id, this.presupuesto)
-    .subscribe((res:any)=>{
-      this.router.navigate(['/listado-presupuestos']);
-    })
+                          .subscribe((resp:any)=>{
+                            this.router.navigate(['/listado-presupuestos']); 
+                          },(error)=>{
+                            console.log(error);
+                          })
   }
 
-  guardarPre(){
-    const guardarPre = {
+  guardarPresupuesto(){
+    const guardarPresupuesto = {
       cliente: this.formPre.get('cliente').value,
       cif: this.formPre.get('cif').value,
       fecha: this.formPre.get('fecha').value,
-      concepto: this.formPre.get('concepto').value,
-      base: this.formPre.get('base').value,
-      retencion: this.formPre.get('retencion').value,
+      items: this.formPre.get('items').value,
+      suma: this.formPre.get('suma').value,
       tipo: this.formPre.get('tipo').value,
-      irpf: this.formPre.get('irpf').value,
-      importe: this.formPre.get('importe').value,
-      total: this.formPre.get('total').value,
-      //fechaRegistro: new Date()
+      importeIVA: this.formPre.get('importeIVA').value,
+      total: this.formPre.get('total').value
     }
-    return guardarPre;
+    return guardarPresupuesto;
   }
+
 
 }
